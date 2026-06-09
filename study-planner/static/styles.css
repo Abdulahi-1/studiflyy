@@ -684,3 +684,39 @@ footer {
     .features h2, .how h2, .about h2 { font-size: 28px; }
     .how-arrow { display: none; } /* just stack on phones, no arrow */
 }
+
+/* ---- planner page (form + schedule table) ---- */
+.plan-row {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+}
+.plan-row input,
+.plan-row select {
+    font-family: "Nunito", sans-serif;
+    font-size: 15px;
+    padding: 10px 14px;
+    border: 2px solid #e9d8f0;
+    border-radius: 14px;
+    background: #fff;
+}
+.plan-table {
+    margin: 20px auto 0;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 14px;
+    overflow: hidden;
+}
+.plan-table th,
+.plan-table td {
+    padding: 10px 22px;
+    text-align: left;
+    border-bottom: 1px solid #f0e6f5;
+    font-family: "Nunito", sans-serif;
+}
+.plan-table th {
+    background: #f7eefc;
+    font-family: "Fredoka", sans-serif;
+}

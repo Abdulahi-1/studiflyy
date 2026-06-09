@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}{{ site_name }} — make a study plan{% endblock %}
+
+{% block content %}
+
+<section class="features">
+    <span class="section-tag">planner</span>
+    <h2>Make a study plan</h2>
+    <p class="section-sub">add your assignments and we'll build a schedule.</p>
+
+    <!-- the form. 3 rows for now - type in what you can, leave the rest blank -->
+    <form method="POST" action="{{ url_for('plan') }}">
+        {% for i in range(3) %}
+            <div class="plan-row">
+                <input type="text" name="name" placeholder="assignment name">
+                <input type="date" name="deadline">
+                <select name="difficulty">
+                    <option value="1">easy (1)</option>
+                    <option value="2">2</option>
+                    <option value="3" selected>medium (3)</option>
+                    <option value="4">4</option>
+                    <option value="5">hard (5)</option>
+                </select>
+            </div>
+        {% endfor %}
+
+        <button type="submit" class="cta">Build my plan →</button>
+    </form>
+</section>
+
+<!-- only show the results section after the form has been submitted -->
+{% if sessions %}
+<section class="how">
+    <span class="section-tag">your schedule</span>
+    <h2>Suggested study sessions</h2>
+
+    <table class="plan-table">
+        <tr>
+            <th>Date</th>
+            <th>Assignment</th>
+            <th>Hours</th>
+        </tr>
+        {% for s in sessions %}
+        <tr>
+            <td>{{ s.date }}</td>
+            <td>{{ s.task }}</td>
+            <td>{{ s.hours }}h</td>
+        </tr>
+        {% endfor %}
+    </table>
+</section>
+{% endif %}
+
+{% endblock %}

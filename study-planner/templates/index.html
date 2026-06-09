@@ -16,7 +16,7 @@
 
         <!-- two buttons: main one is filled, the other is just an outline -->
         <div class="hero-actions">
-            <button class="cta">{{ hero.primary_cta }} <span class="btn-emoji">→</span></button>
+            <a href="{{ url_for('plan') }}" class="cta">{{ hero.primary_cta }} <span class="btn-emoji">→</span></a>
             <button class="cta cta-ghost">{{ hero.secondary_cta }}</button>
         </div>
 

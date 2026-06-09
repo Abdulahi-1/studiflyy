@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}{{ site_name }} — {{ title }}{% endblock %}
+
+{% block content %}
+
+<section class="features">
+    <div class="feature-icon">{{ icon }}</div>
+    <h2>{{ title }}</h2>
+    <p class="section-sub">{{ body }}</p>
+</section>
+
+{% endblock %}

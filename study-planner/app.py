@@ -1,17 +1,23 @@
 # Studifly - main Flask app
 # this is what runs the website (renders the homepage template)
 
-from flask import Flask, render_template
+from datetime import datetime
+
+from flask import Flask, render_template, request
+
+from models.task import Task
+from planner.scheduler import build_schedule
 
 app = Flask(__name__)
 
 
 # nav bar links. just anchors to the sections for now
+# nav bar = one tab per feature. keeping it simple, just the 4 things the app does.
 NAV_LINKS = [
-    {"href": "#home",     "label": "Home"},
-    {"href": "#features", "label": "Features"},
-    {"href": "#how",      "label": "How it works"},
-    {"href": "#about",    "label": "About"},
+    {"href": "/summaries", "label": "Summaries"},
+    {"href": "/quizzes",   "label": "Quizzes"},
+    {"href": "/calendar",  "label": "Calendar"},
+    {"href": "/plan",      "label": "Planner"},
 ]
 
 # big welcome section at the top of the page
@@ -113,6 +119,69 @@ def index():
         how_steps=HOW_STEPS,
         about=ABOUT,
         year=2026,
+    )
+
+
+# the planner page. GET shows the form, POST builds the schedule.
+@app.route("/plan", methods=["GET", "POST"])
+def plan():
+    sessions = []
+
+    if request.method == "POST":
+        # the form sends one list per field (name[], deadline[], difficulty[])
+        names = request.form.getlist("name")
+        deadlines = request.form.getlist("deadline")
+        difficulties = request.form.getlist("difficulty")
+
+        # build a Task for each filled-in row
+        tasks = []
+        for name, deadline, difficulty in zip(names, deadlines, difficulties):
+            if not name or not deadline:
+                continue  # skip empty rows
+            tasks.append(Task(
+                name=name,
+                deadline=datetime.strptime(deadline, "%Y-%m-%d"),
+                difficulty=int(difficulty),
+            ))
+
+        # this is the scheduler we wrote in planner/scheduler.py
+        sessions = build_schedule(tasks)
+
+    return render_template(
+        "plan.html",
+        site_name="Studifly",
+        nav_links=NAV_LINKS,
+        sessions=sessions,
+        year=2026,
+    )
+
+
+# the other 3 feature tabs. these aren't built yet, so they just show a
+# simple "coming soon" page for now (same layout, different text).
+@app.route("/summaries")
+def summaries():
+    return render_template(
+        "feature.html", site_name="Studifly", nav_links=NAV_LINKS, year=2026,
+        icon="📝", title="Smart Note Summaries",
+        body="Upload your notes and get a clean summary. Coming soon!",
+    )
+
+
+@app.route("/quizzes")
+def quizzes():
+    return render_template(
+        "feature.html", site_name="Studifly", nav_links=NAV_LINKS, year=2026,
+        icon="🧠", title="AI Practice Quizzes",
+        body="Auto-generate quiz questions from your notes. Coming soon!",
+    )
+
+
+@app.route("/calendar")
+def calendar():
+    return render_template(
+        "feature.html", site_name="Studifly", nav_links=NAV_LINKS, year=2026,
+        icon="📅", title="Calendar Sync",
+        body="Send your study sessions to Google Calendar. Coming soon!",
     )
 
 
