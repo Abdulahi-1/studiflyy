@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{{ site_name }}{% endblock %}</title>
+
+    <!-- google fonts. went w/ rounded ones bc they feel softer / kawaii -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- my own styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    {% block head_extra %}{% endblock %}
+</head>
+<body>
+
+    <!-- soft pastel blobs in the background (took forever to pick colors lol) -->
+    <div class="bg"></div>
+
+    <!-- fluffy clouds drifting behind everything -->
+    <div class="clouds" aria-hidden="true">
+        <span class="cloud c1">☁️</span>
+        <span class="cloud c2">☁️</span>
+        <span class="cloud c3">☁️</span>
+    </div>
+
+    <!-- butterflies floating around. these are the main vibe -->
+    <div class="butterflies" aria-hidden="true">
+        {% for n in range(1, 7) %}
+            <span class="butterfly b{{ n }}">🦋</span>
+        {% endfor %}
+    </div>
+
+    <!-- sparkles + stars in the background -->
+    <div class="sparkles" aria-hidden="true">
+        <span class="sparkle s1">✦</span>
+        <span class="sparkle s2">✧</span>
+        <span class="sparkle s3">✦</span>
+        <span class="sparkle s4">✧</span>
+        <span class="sparkle s5">✦</span>
+        <span class="sparkle s6">✧</span>
+        <span class="sparkle s7">✦</span>
+    </div>
+
+    <!-- top nav bar -->
+    <header>
+        <nav>
+            <a href="{{ url_for('index') }}" class="logo">
+                <span class="logo-icon">🦋</span>
+                <span class="logo-text">{{ site_name }}</span>
+            </a>
+            <!-- looped through the links from app.py instead of hardcoding -->
+            <ul class="nav-links">
+                {% for link in nav_links %}
+                    <li><a href="{{ link.href }}">{{ link.label }}</a></li>
+                {% endfor %}
+            </ul>
+        </nav>
+    </header>
+
+    <!-- main content goes here (each page fills this in) -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- footer. keeping it simple -->
+    <footer>
+        <p>built by a student <span class="heart">✦</span> &copy; {{ year }} {{ site_name }}</p>
+    </footer>
+
+</body>
+</html>
