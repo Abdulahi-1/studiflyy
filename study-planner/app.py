@@ -79,7 +79,7 @@ HOW_STEPS = [
     {
         "icon": "✨",
         "title": "AI does the magic",
-        "body": "Summaries, quizzes, and priorities — all auto-generated.",
+        "body": "Summaries, quizzes, and priorities all auto-generated.",
     },
     {
         "icon": "🦋",
@@ -89,11 +89,11 @@ HOW_STEPS = [
 ]
 
 ABOUT = (
-    "Studifly is a project I'm building for class — an AI Study Buddy that "
+    "Studifly is a project I'm building for class, an AI Study Buddy that "
     "combines a planner and a study helper. Canvas and Google Calendar just "
     "store stuff, they don't actually help you learn it. Studifly uses "
     "Hugging Face models to summarize notes, generate quiz questions, and "
-    "slot study sessions into your real calendar — so studying feels a "
+    "slot study sessions into your real calendar so studying feels a "
     "little less like drowning."
 )
 
