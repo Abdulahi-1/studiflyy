@@ -1,12 +1,7 @@
 How I used AI on this project (Studifly)
-========================================
-
-Just keeping track of where I used AI to help me build stuff, mostly so I
-remember how I did it and can be honest about what I got help with.
-
 
 Putting icons in
-----------------
+
 I wanted little icons next to the features and in the header but I didn't
 really know how to do icons. AI told me I could just use emojis directly
 (like 📝 🧠 📅 🦋) instead of installing some icon library, which was way
@@ -16,7 +11,7 @@ in a little span so I could size it.
 
 
 Making the emojis move
-----------------------
+
 The background emojis (clouds, butterflies, stars) looked boring just sitting
 there so I asked AI how to make them float around. It showed me CSS
 @keyframes and the animation property. That's where the clouds drifting,
@@ -26,7 +21,7 @@ so they don't all move at the same time, which looked weird at first.
 
 
 Getting the AI answers into a box
----------------------------------
+
 At first the summary and quiz text just dumped onto the page and looked bad.
 I asked AI how to make it show up in a nice box. It helped me make the
 .ai-result class in styles.css (white box, rounded corners, shadow, padding).
@@ -37,7 +32,7 @@ summaries and quizzes pages.
 
 
 Other stuff
------------
+
 I also asked AI random questions while building, like how Flask routes work,
 how the base.html template thing works, and some CSS layout help. I didn't
 just copy everything, I changed it to fit my project and made sure I
