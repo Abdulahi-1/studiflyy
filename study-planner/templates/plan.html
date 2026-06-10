@@ -9,7 +9,6 @@
     <h2>Make a study plan</h2>
     <p class="section-sub">add your assignments and we'll build a schedule.</p>
 
-    <!-- the form. 3 rows for now - type in what you can, leave the rest blank -->
     <form method="POST" action="{{ url_for('plan') }}">
         {% for i in range(3) %}
             <div class="plan-row">
@@ -25,11 +24,11 @@
             </div>
         {% endfor %}
 
-        <button type="submit" class="cta">Build my plan →</button>
+        <button type="submit" name="action" value="build" class="cta">Build my plan →</button>
+        <button type="submit" name="action" value="sync" class="cta">Build + add to Google Calendar 📅</button>
     </form>
 </section>
 
-<!-- only show the results section after the form has been submitted -->
 {% if sessions %}
 <section class="how">
     <span class="section-tag">your schedule</span>
@@ -49,6 +48,24 @@
         </tr>
         {% endfor %}
     </table>
+</section>
+{% endif %}
+
+{% if calendar_error %}
+<section class="how">
+    <p class="section-sub">⚠️ couldn't add to Google Calendar: {{ calendar_error }}</p>
+</section>
+{% endif %}
+
+{% if calendar_links %}
+<section class="how">
+    <span class="section-tag">added to calendar</span>
+    <h2>Your sessions are on Google Calendar 🎉</h2>
+    <ul>
+        {% for link in calendar_links %}
+        <li><a href="{{ link }}" target="_blank">open event {{ loop.index }}</a></li>
+        {% endfor %}
+    </ul>
 </section>
 {% endif %}
 

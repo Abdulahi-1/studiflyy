@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}{{ site_name }} — practice quizzes{% endblock %}
+
+{% block content %}
+
+<section class="features">
+    <span class="section-tag">quizzes</span>
+    <h2>🧠 AI Practice Quizzes</h2>
+    <p class="section-sub">type in a topic and get practice questions to test yourself.</p>
+
+    <form method="POST" action="{{ url_for('quizzes') }}">
+        <div class="plan-row">
+            <input type="text" name="topic" placeholder="e.g. photosynthesis" value="{{ topic }}">
+        </div>
+        <button type="submit" class="cta">Make a quiz →</button>
+    </form>
+</section>
+
+{% if error %}
+<section class="how">
+    <p class="section-sub">⚠️ something went wrong: {{ error }}</p>
+</section>
+{% endif %}
+
+{% if quiz %}
+<section class="how">
+    <span class="section-tag">your quiz</span>
+    <h2>Test yourself on {{ topic }}</h2>
+    <div class="ai-result">{{ quiz }}</div>
+</section>
+{% endif %}
+
+{% endblock %}

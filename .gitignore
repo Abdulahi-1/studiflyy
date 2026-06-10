@@ -1,0 +1,14 @@
+# secrets / API keys
+.env
+study-planner/planner/credentials.json
+study-planner/planner/token.json
+
+# virtual environment
+venv/
+
+# python
+__pycache__/
+*.pyc
+
+# macOS
+.DS_Store

@@ -4,47 +4,38 @@
 
 {% block content %}
 
-    <!-- hero section (the first thing you see) -->
     <section id="home" class="hero">
-        <!-- little sticker above the title -->
         <span class="hero-tag">{{ hero.tag }}</span>
 
-        <!-- main title. the <em> part is the italic blue word -->
         <h2>{{ hero.title }} <em>{{ hero.title_em }}</em><span class="title-butterfly">🦋</span></h2>
 
         <p>{{ hero.subtitle }}</p>
 
-        <!-- two buttons: main one is filled, the other is just an outline -->
         <div class="hero-actions">
             <a href="{{ url_for('plan') }}" class="cta">{{ hero.primary_cta }} <span class="btn-emoji">→</span></a>
             <button class="cta cta-ghost">{{ hero.secondary_cta }}</button>
         </div>
 
-        <!-- stats row. just placeholder numbers for now -->
         <div class="hero-stats">
             {% for stat in stats %}
                 <div class="stat">
                     <span class="stat-num">{{ stat.num }}</span>
                     <span class="stat-label">{{ stat.label }}</span>
                 </div>
-                {# add a little line between stats but not after the last one #}
                 {% if not loop.last %}
                     <div class="stat-divider"></div>
                 {% endif %}
             {% endfor %}
         </div>
 
-        <!-- lil note to keep it student-made feeling but chill -->
         <p class="doodle-note">— for the nights when 30 pages of notes are due tomorrow.</p>
     </section>
 
-    <!-- features section: the main things the app does (matches spec.md) -->
     <section id="features" class="features">
         <span class="section-tag">what it does</span>
         <h2>Four things to make studying easier</h2>
         <p class="section-sub">notes, quizzes, calendars, priorities — all in one spot.</p>
 
-        <!-- grid auto-fits the cards, so it stacks nicely on phones -->
         <div class="feature-grid">
             {% for feature in features %}
                 <article class="feature-card">
@@ -56,7 +47,6 @@
         </div>
     </section>
 
-    <!-- how it works: 3 steps. mirrors the workflow in spec.md -->
     <section id="how" class="how">
         <span class="section-tag">how it works</span>
         <h2>Three steps. That's it.</h2>
@@ -77,7 +67,6 @@
         </div>
     </section>
 
-    <!-- about section. short blurb about the project -->
     <section id="about" class="about">
         <span class="section-tag">about</span>
         <h2>About this project</h2>

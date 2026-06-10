@@ -1,18 +1,15 @@
-# Studifly - main Flask app
-# this is what runs the website (renders the homepage template)
-
 from datetime import datetime
 
 from flask import Flask, render_template, request
 
 from models.task import Task
 from planner.scheduler import build_schedule
+from planner.ai_helper import summarize_notes, generate_quiz
+from planner import calendar as gcal
 
 app = Flask(__name__)
 
 
-# nav bar links. just anchors to the sections for now
-# nav bar = one tab per feature. keeping it simple, just the 4 things the app does.
 NAV_LINKS = [
     {"href": "/summaries", "label": "Summaries"},
     {"href": "/quizzes",   "label": "Quizzes"},
@@ -20,11 +17,10 @@ NAV_LINKS = [
     {"href": "/plan",      "label": "Planner"},
 ]
 
-# big welcome section at the top of the page
 HERO = {
     "tag": "your ai study buddy",
     "title": "Welcome to",
-    "title_em": "Studifly",  # this part shows up italic + blue
+    "title_em": "Studifly",
     "subtitle": (
         "Upload your messy notes, get clean summaries, auto-generated quizzes, "
         "and a study plan that drops straight into your Google Calendar."
@@ -33,14 +29,12 @@ HERO = {
     "secondary_cta": "See How",
 }
 
-# fake stats for now - will hook up to real numbers later
 STATS = [
     {"num": "1.2k", "label": "Notes Summarized"},
     {"num": "850+", "label": "Quizzes Made"},
     {"num": "∞",    "label": "Late-night saves"},
 ]
 
-# the 4 feature cards (based on what the project is supposed to do, see spec.md)
 FEATURES = [
     {
         "icon": "📝",
@@ -76,7 +70,6 @@ FEATURES = [
     },
 ]
 
-# 3-step "how it works" section. mirrors the workflow described in spec.md
 HOW_STEPS = [
     {
         "icon": "📤",
@@ -95,7 +88,6 @@ HOW_STEPS = [
     },
 ]
 
-# short blurb for the about section
 ABOUT = (
     "Studifly is a project I'm building for class — an AI Study Buddy that "
     "combines a planner and a study helper. Canvas and Google Calendar just "
@@ -106,7 +98,6 @@ ABOUT = (
 )
 
 
-# homepage route - just renders the template with all the data above
 @app.route("/")
 def index():
     return render_template(
@@ -122,57 +113,83 @@ def index():
     )
 
 
-# the planner page. GET shows the form, POST builds the schedule.
 @app.route("/plan", methods=["GET", "POST"])
 def plan():
     sessions = []
+    calendar_links = None
+    calendar_error = None
 
     if request.method == "POST":
-        # the form sends one list per field (name[], deadline[], difficulty[])
         names = request.form.getlist("name")
         deadlines = request.form.getlist("deadline")
         difficulties = request.form.getlist("difficulty")
 
-        # build a Task for each filled-in row
         tasks = []
         for name, deadline, difficulty in zip(names, deadlines, difficulties):
             if not name or not deadline:
-                continue  # skip empty rows
+                continue
             tasks.append(Task(
                 name=name,
                 deadline=datetime.strptime(deadline, "%Y-%m-%d"),
                 difficulty=int(difficulty),
             ))
 
-        # this is the scheduler we wrote in planner/scheduler.py
         sessions = build_schedule(tasks)
+
+        if request.form.get("action") == "sync" and sessions:
+            try:
+                calendar_links = gcal.add_sessions(sessions)
+            except Exception as e:
+                calendar_error = str(e)
 
     return render_template(
         "plan.html",
         site_name="Studifly",
         nav_links=NAV_LINKS,
         sessions=sessions,
+        calendar_links=calendar_links,
+        calendar_error=calendar_error,
         year=2026,
     )
 
 
-# the other 3 feature tabs. these aren't built yet, so they just show a
-# simple "coming soon" page for now (same layout, different text).
-@app.route("/summaries")
+@app.route("/summaries", methods=["GET", "POST"])
 def summaries():
+    notes = ""
+    summary = None
+    error = None
+
+    if request.method == "POST":
+        notes = request.form.get("notes", "")
+        if notes.strip():
+            try:
+                summary = summarize_notes(notes)
+            except Exception as e:
+                error = str(e)
+
     return render_template(
-        "feature.html", site_name="Studifly", nav_links=NAV_LINKS, year=2026,
-        icon="📝", title="Smart Note Summaries",
-        body="Upload your notes and get a clean summary. Coming soon!",
+        "summaries.html", site_name="Studifly", nav_links=NAV_LINKS, year=2026,
+        notes=notes, summary=summary, error=error,
     )
 
 
-@app.route("/quizzes")
+@app.route("/quizzes", methods=["GET", "POST"])
 def quizzes():
+    topic = ""
+    quiz = None
+    error = None
+
+    if request.method == "POST":
+        topic = request.form.get("topic", "")
+        if topic.strip():
+            try:
+                quiz = generate_quiz(topic)
+            except Exception as e:
+                error = str(e)
+
     return render_template(
-        "feature.html", site_name="Studifly", nav_links=NAV_LINKS, year=2026,
-        icon="🧠", title="AI Practice Quizzes",
-        body="Auto-generate quiz questions from your notes. Coming soon!",
+        "quizzes.html", site_name="Studifly", nav_links=NAV_LINKS, year=2026,
+        topic=topic, quiz=quiz, error=error,
     )
 
 
@@ -181,10 +198,10 @@ def calendar():
     return render_template(
         "feature.html", site_name="Studifly", nav_links=NAV_LINKS, year=2026,
         icon="📅", title="Calendar Sync",
-        body="Send your study sessions to Google Calendar. Coming soon!",
+        body="Head to the Planner, build a study plan, then hit "
+             "\"Build + add to Google Calendar\" to send your sessions over.",
     )
 
 
-# run the app (debug=True so it reloads when i save changes)
 if __name__ == "__main__":
     app.run(debug=True)

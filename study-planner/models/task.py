@@ -5,4 +5,4 @@ from datetime import datetime
 class Task:
     name: str
     deadline: datetime
-    difficulty: int  # 1 (easy) to 5 (hard)
+    difficulty: int

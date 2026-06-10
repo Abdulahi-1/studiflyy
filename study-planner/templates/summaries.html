@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}{{ site_name }} — note summaries{% endblock %}
+
+{% block content %}
+
+<section class="features">
+    <span class="section-tag">summaries</span>
+    <h2>📝 Smart Note Summaries</h2>
+    <p class="section-sub">paste your messy lecture notes and get the key ideas back.</p>
+
+    <form method="POST" action="{{ url_for('summaries') }}">
+        <textarea class="notes-input" name="notes" placeholder="paste your notes here...">{{ notes }}</textarea>
+        <button type="submit" class="cta">Summarize →</button>
+    </form>
+</section>
+
+{% if error %}
+<section class="how">
+    <p class="section-sub">⚠️ something went wrong: {{ error }}</p>
+</section>
+{% endif %}
+
+{% if summary %}
+<section class="how">
+    <span class="section-tag">your summary</span>
+    <h2>Here's the short version</h2>
+    <div class="ai-result">{{ summary }}</div>
+</section>
+{% endif %}
+
+{% endblock %}
