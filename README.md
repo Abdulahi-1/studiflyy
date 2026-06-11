@@ -20,7 +20,7 @@ Studifly is a Flask web app built for college students who are juggling multiple
 
 
 
-## Video Walkthrough
+
 
 ## Project Structure
 
