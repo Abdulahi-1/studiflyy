@@ -18,6 +18,10 @@ Studifly is a Flask web app built for college students who are juggling multiple
 - **Calendar:** Google Calendar API (OAuth 2.0)
 - **Frontend:** Server-rendered HTML templates + CSS
 
+
+
+## Video Walkthrough
+
 ## Project Structure
 
 ```
